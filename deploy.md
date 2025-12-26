@@ -190,8 +190,6 @@ sudo apt install -y certbot python3-certbot-nginx
 sudo certbot --nginx -d your-domain.com
 ```
 
----
-
 ## 8. 维护与更新
 
 当代码有更新时：
@@ -203,3 +201,18 @@ npm install
 npm run build
 # Nginx 会自动服务最新的 dist 目录，无需重启
 ```
+
+---
+
+## 9. 环境变量配置参考
+
+以下是 `.env` 文件中可用的环境变量：
+
+```env
+# 站点基础 URL，用于生成来源参数
+VITE_FROM_SOURCE=https://your-domain.com/
+
+# Google Analytics 测量 ID (可选)
+VITE_GA_ID=G-XXXXXXXXXX
+```
+

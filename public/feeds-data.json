@@ -1,0 +1,141 @@
+{
+  "updated_at": "2025-12-26T03:06:36.367Z",
+  "tech": [
+    {
+      "id": "46387657",
+      "title": "Maybe the default settings are too high",
+      "url": "https://www.raptitude.com/2025/12/maybe-the-default-settings-are-too-high/",
+      "source": "HN",
+      "points": 256
+    },
+    {
+      "id": "46388213",
+      "title": "MiniMax M2.1: Built for Real-World Complex Tasks, Multi-Language Programming",
+      "url": "https://www.minimaxi.com/news/minimax-m21",
+      "source": "HN",
+      "points": 44
+    },
+    {
+      "id": "46384167",
+      "title": "Python 3.15’s interpreter for Windows x86-64 should hopefully be 15% faster",
+      "url": "https://fidget-spinner.github.io/posts/no-longer-sorry.html",
+      "source": "HN",
+      "points": 326
+    },
+    {
+      "id": "46358211",
+      "title": "Paperbacks and TikTok",
+      "url": "https://calnewport.com/on-paperbacks-and-tiktok/",
+      "source": "HN",
+      "points": 82
+    },
+    {
+      "id": "46386211",
+      "title": "Fahrplan – 39C3",
+      "url": "https://fahrplan.events.ccc.de/congress/2025/fahrplan/",
+      "source": "HN",
+      "points": 154
+    },
+    {
+      "id": "46336577",
+      "title": "The entire New Yorker archive is now digitized",
+      "url": "https://www.newyorker.com/news/press-room/the-entire-new-yorker-archive-is-now-fully-digitized",
+      "source": "HN",
+      "points": 356
+    },
+    {
+      "id": "46388059",
+      "title": "When a driver challenges the kernel's assumptions",
+      "url": "http://miod.online.fr/software/openbsd/stories/udl.html",
+      "source": "HN",
+      "points": 20
+    },
+    {
+      "id": "46324881",
+      "title": "Tiled Art",
+      "url": "https://tiled.art/en/home/?id=SilverAndGold",
+      "source": "HN",
+      "points": 14
+    },
+    {
+      "id": "46330732",
+      "title": "CUDA Tile Open Sourced",
+      "url": "https://github.com/NVIDIA/cuda-tile",
+      "source": "HN",
+      "points": 149
+    },
+    {
+      "id": "46388040",
+      "title": "Seven Diabetes Patients Die Due to Undisclosed Bug in Abbott's Glucose Monitors",
+      "url": "https://sfconservancy.org/blog/2025/dec/23/seven-abbott-freestyle-libre-cgm-patients-dead/",
+      "source": "HN",
+      "points": 58
+    },
+    {
+      "id": "46384565",
+      "title": "Asahi Linux with Sway on the MacBook Air M2 (2024)",
+      "url": "https://daniel.lawrence.lu/blog/2024-12-01-asahi-linux-with-sway-on-the-macbook-air-m2/",
+      "source": "HN",
+      "points": 192
+    },
+    {
+      "id": "46357362",
+      "title": "Archiving Git branches as tags",
+      "url": "https://etc.octavore.com/2025/12/archiving-git-branches-as-tags/",
+      "source": "HN",
+      "points": 87
+    },
+    {
+      "id": "46358166",
+      "title": "The Program 2025 annual review: How much money does an audio drama podcast make?",
+      "url": "https://programaudioseries.com/the-program-results-7/",
+      "source": "HN",
+      "points": 45
+    },
+    {
+      "id": "46385308",
+      "title": "I sell onions on the Internet (2019)",
+      "url": "https://www.deepsouthventures.com/i-sell-onions-on-the-internet/",
+      "source": "HN",
+      "points": 384
+    }
+  ],
+  "design": [
+    {
+      "id": "d1",
+      "title": "Figma to Code: Best Practices for 2024",
+      "url": "https://example.com/figma-to-code",
+      "source": "Design",
+      "points": 120
+    },
+    {
+      "id": "d2",
+      "title": "The Evolution of Minimalist Web Design",
+      "url": "https://example.com/minimalist-design",
+      "source": "Design",
+      "points": 85
+    },
+    {
+      "id": "d3",
+      "title": "Why Typography Matters More Than You Think",
+      "url": "https://example.com/typography",
+      "source": "Design",
+      "points": 210
+    },
+    {
+      "id": "d4",
+      "title": "Color Theory in Modern UI Design",
+      "url": "https://example.com/color-theory",
+      "source": "Design",
+      "points": 156
+    },
+    {
+      "id": "d5",
+      "title": "Mastering Auto Layout in Figma",
+      "url": "https://example.com/figma-auto-layout",
+      "source": "Design",
+      "points": 94
+    }
+  ],
+  "news": []
+}

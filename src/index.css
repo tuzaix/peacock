@@ -1,0 +1,85 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  
+  /* Default Theme Variables (Light) - Enhanced Contrast (Space-separated for Tailwind) */
+  --color-primary: 29 78 216;    /* blue-700 */
+  --color-bg: 255 255 255;       /* white */
+  --color-card: 255 255 255;     /* white */
+  --color-text: 2 6 23;          /* slate-950 */
+  --color-border: 203 213 225;   /* slate-300 */
+}
+
+.dark {
+  /* Default Theme Variables (Dark) - Enhanced Contrast */
+  --color-primary: 96 165 250;   /* blue-400 */
+  --color-bg: 2 6 23;            /* slate-950 */
+  --color-card: 15 23 42;        /* slate-900 */
+  --color-text: 255 255 255;     /* white */
+  --color-border: 51 65 85;      /* slate-700 */
+}
+
+/* Theme Classes - Enhanced Contrast */
+.theme-ocean {
+  --color-primary: 14 116 144;   /* cyan-700 */
+  --color-bg: 240 249 255;
+  --color-text: 8 47 73;         /* sky-950 */
+  --color-border: 125 211 252;   /* sky-300 */
+}
+.theme-ocean.dark {
+  --color-primary: 34 211 238;
+  --color-bg: 8 47 73;
+  --color-card: 12 74 110;
+  --color-border: 14 116 144;    /* cyan-700 */
+}
+
+.theme-forest {
+  --color-primary: 4 120 87;     /* emerald-700 */
+  --color-bg: 240 253 244;
+  --color-text: 2 44 34;         /* green-950 */
+  --color-border: 134 239 172;   /* green-300 */
+}
+.theme-forest.dark {
+  --color-primary: 52 211 153;
+  --color-bg: 2 44 34;           /* green-950 */
+  --color-card: 6 78 59;         /* green-900 */
+  --color-border: 5 150 105;     /* emerald-600 */
+}
+
+.theme-sunset {
+  --color-primary: 190 18 60;     /* rose-700 */
+  --color-bg: 255 241 242;
+  --color-text: 76 5 25;         /* rose-950 */
+  --color-border: 251 113 133;   /* rose-400 */
+}
+.theme-sunset.dark {
+  --color-primary: 251 113 133;
+  --color-bg: 76 5 25;
+  --color-card: 136 19 55;
+  --color-border: 159 18 57;     /* rose-700 */
+}
+
+.theme-cyberpunk {
+  --color-primary: 192 38 211;    /* fuchsia-700 */
+  --color-bg: 250 245 255;
+  --color-text: 59 7 100;        /* purple-950 */
+  --color-border: 216 180 254;   /* purple-300 */
+}
+.theme-cyberpunk.dark {
+  --color-primary: 232 121 249;   /* fuchsia-400 */
+  --color-bg: 0 0 0;
+  --color-card: 23 23 23;        /* neutral-900 */
+  --color-text: 255 255 255;
+  --color-border: 64 64 64;      /* neutral-700 */
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: rgb(var(--color-bg));
+  color: rgb(var(--color-text));
+}

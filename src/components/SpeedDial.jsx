@@ -79,7 +79,7 @@ const SpeedDial = ({ t, formatUrl }) => {
   const allShortcuts = [...systemShortcuts, ...myShortcuts];
 
   return (
-    <div className="w-full max-w-5xl mx-auto px-4 mb-12 space-y-6">
+    <div className="w-full max-w-5xl mx-auto px-4 space-y-6">
       {/* 快捷拨号 - 单行滚动布局 */}
       <div className="relative group/scroll">
         <div className="flex items-center space-x-4 rtl:space-x-reverse overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory">
@@ -156,22 +156,39 @@ const SpeedDial = ({ t, formatUrl }) => {
               {t('proxy_tools')}
             </h4>
           </div>
-          <div className="flex items-center space-x-2 rtl:space-x-reverse overflow-x-auto pb-2 scrollbar-hide">
+          <div className="flex items-center space-x-4 rtl:space-x-reverse overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory">
             {proxyTools.map((tool) => (
-              <a
+              <div
                 key={tool.name}
-                href={formatUrl(tool.url)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center space-x-2 px-3 py-1.5 bg-slate-100 dark:bg-slate-800/50 rounded-lg border border-transparent hover:border-primary/30 hover:bg-primary/5 transition-all whitespace-nowrap group/tool"
+                className="group relative flex-shrink-0 w-24 flex flex-col items-center p-2 bg-card rounded-xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all border border-border hover:border-primary/50 snap-start"
               >
-                <div className="w-4 h-4 rounded overflow-hidden opacity-70 group-hover/tool:opacity-100 transition-opacity">
-                  <img src={getFavicon(tool.url)} alt="" className="w-full h-full object-contain" />
-                </div>
-                <span className="text-[11px] font-bold text-slate-600 dark:text-slate-400 group-hover/tool:text-primary transition-colors">
-                  {tool.name}
-                </span>
-              </a>
+                <a
+                  href={formatUrl(tool.url)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex flex-col items-center space-y-2 w-full"
+                >
+                  <div className="w-10 h-10 flex items-center justify-center bg-slate-50 dark:bg-slate-800 rounded-xl text-slate-700 dark:text-slate-200 group-hover:bg-primary group-hover:scale-105 transition-all duration-300 shadow-sm overflow-hidden border border-border/50">
+                    <img 
+                      src={getFavicon(tool.url)} 
+                      alt="" 
+                      className="w-6 h-6 object-contain"
+                      onError={(e) => {
+                        const domain = new URL(tool.url).hostname;
+                        const fallbackUrl = `https://www.google.com/s2/favicons?sz=128&domain=${domain}`;
+                        if (e.target.src !== fallbackUrl) {
+                          e.target.src = fallbackUrl;
+                        } else {
+                          e.target.style.display = 'none';
+                        }
+                      }}
+                    />
+                  </div>
+                  <span className="text-[10px] font-bold text-text truncate w-full text-center group-hover:text-primary transition-colors px-1">
+                    {tool.name}
+                  </span>
+                </a>
+              </div>
             ))}
           </div>
         </div>

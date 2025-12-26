@@ -98,6 +98,19 @@ const getAllSites = () => {
     }
   }
 
+  // 3. 从 proxy-tools.json 读取
+  const proxyPath = path.join(__dirname, '../public/proxy-tools.json');
+  if (fs.existsSync(proxyPath)) {
+    try {
+      const config = JSON.parse(fs.readFileSync(proxyPath, 'utf-8'));
+      if (config.proxyTools) {
+        config.proxyTools.forEach(s => sites.add(s.url));
+      }
+    } catch (e) {
+      console.error('Error reading proxy-tools.json:', e.message);
+    }
+  }
+
   return Array.from(sites);
 };
 

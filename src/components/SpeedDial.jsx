@@ -8,6 +8,7 @@ import { useLocalStorage } from '../hooks/useLocalStorage';
  */
 const SpeedDial = ({ t, formatUrl }) => {
   const [systemShortcuts, setSystemShortcuts] = useState([]);
+  const [proxyTools, setProxyTools] = useState([]);
   const [myShortcuts, setMyShortcuts] = useLocalStorage('dailyhub_shortcuts', []);
   const [isAdding, setIsAdding] = useState(false);
   const [newName, setNewName] = useState('');
@@ -23,6 +24,19 @@ const SpeedDial = ({ t, formatUrl }) => {
         }
       })
       .catch(err => console.error('Failed to load shortcuts config:', err));
+
+    // 加载代理工具配置
+    fetch('/proxy-tools.json')
+      .then(res => res.json())
+      .then(data => {
+        if (data.proxyTools && Array.isArray(data.proxyTools)) {
+          setProxyTools(data.proxyTools);
+        }
+      })
+      .catch(err => {
+        console.warn('Proxy tools config not found or invalid');
+        setProxyTools([]); // 确保出错时也为空
+      });
   }, []);
 
   const addShortcut = (e) => {
@@ -65,70 +79,103 @@ const SpeedDial = ({ t, formatUrl }) => {
   const allShortcuts = [...systemShortcuts, ...myShortcuts];
 
   return (
-    <div className="w-full max-w-5xl mx-auto px-4 mb-12">
-      <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-4">
-        {allShortcuts.map((shortcut, index) => {
-          const isSystem = index < systemShortcuts.length;
-          return (
-            <div
-              key={shortcut.id}
-              className="group relative flex flex-col items-center p-2 bg-card rounded-xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all border border-border hover:border-primary/50"
-            >
-              {!isSystem && (
-                <button
-                  onClick={() => removeShortcut(shortcut.id)}
-                  className="absolute -top-2 -right-2 rtl:-right-auto rtl:-left-2 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-all hover:scale-110 shadow-sm z-10"
+    <div className="w-full max-w-5xl mx-auto px-4 mb-12 space-y-6">
+      {/* 快捷拨号 - 单行滚动布局 */}
+      <div className="relative group/scroll">
+        <div className="flex items-center space-x-4 rtl:space-x-reverse overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory">
+          {allShortcuts.map((shortcut, index) => {
+            const isSystem = index < systemShortcuts.length;
+            return (
+              <div
+                key={shortcut.id}
+                className="group relative flex-shrink-0 w-24 flex flex-col items-center p-2 bg-card rounded-xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all border border-border hover:border-primary/50 snap-start"
+              >
+                {!isSystem && (
+                  <button
+                    onClick={() => removeShortcut(shortcut.id)}
+                    className="absolute -top-2 -right-2 rtl:-right-auto rtl:-left-2 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-all hover:scale-110 shadow-sm z-10"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                )}
+                {isSystem && (
+                  <div className="absolute -top-2 -left-2 rtl:-left-auto rtl:-right-2 p-1 bg-amber-500 text-white rounded-full shadow-sm z-10 scale-75 opacity-80">
+                    <Flame className="h-3 w-3 fill-white" />
+                  </div>
+                )}
+                <a
+                  href={formatUrl(shortcut.url)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex flex-col items-center space-y-2 w-full"
                 >
-                  <X className="h-3 w-3" />
-                </button>
-              )}
-              {isSystem && (
-                <div className="absolute -top-2 -left-2 rtl:-left-auto rtl:-right-2 p-1 bg-amber-500 text-white rounded-full shadow-sm z-10 scale-75 opacity-80">
-                  <Flame className="h-3 w-3 fill-white" />
-                </div>
-              )}
+                  <div className="w-10 h-10 flex items-center justify-center bg-slate-50 dark:bg-slate-800 rounded-xl text-slate-700 dark:text-slate-200 group-hover:bg-primary group-hover:scale-105 transition-all duration-300 shadow-sm overflow-hidden border border-border/50">
+                    {getFavicon(shortcut.url) ? (
+                      <img 
+                        src={getFavicon(shortcut.url)} 
+                        alt={shortcut.name}
+                        className="w-6 h-6 object-contain"
+                        onError={(e) => {
+                          const domain = new URL(shortcut.url).hostname;
+                          const fallbackUrl = `https://www.google.com/s2/favicons?sz=128&domain=${domain}`;
+                          if (e.target.src !== fallbackUrl) {
+                            e.target.src = fallbackUrl;
+                          } else {
+                            e.target.style.display = 'none';
+                            e.target.nextSibling.style.display = 'block';
+                          }
+                        }}
+                      />
+                    ) : null}
+                    <ExternalLink className="h-4 w-4 hidden" />
+                  </div>
+                  <span className="text-[10px] font-bold text-text truncate w-full text-center group-hover:text-primary transition-colors px-1">
+                    {shortcut.name}
+                  </span>
+                </a>
+              </div>
+            );
+          })}
+
+          <button
+            onClick={() => setIsAdding(true)}
+            className="flex-shrink-0 flex flex-col items-center justify-center w-24 h-24 bg-slate-50/50 dark:bg-slate-800/50 border border-dashed border-border rounded-xl text-slate-400 hover:text-primary hover:border-primary hover:bg-primary/5 hover:scale-105 transition-all group snap-start"
+          >
+            <Plus className="h-5 w-5 group-hover:rotate-90 transition-transform" />
+            <span className="text-[10px] font-bold mt-1">{t('addBtn')}</span>
+          </button>
+        </div>
+      </div>
+
+      {/* 热门代理工具栏 - 仅在有数据时展示 */}
+      {proxyTools && proxyTools.length > 0 && (
+        <div className="pt-2">
+          <div className="flex items-center space-x-2 rtl:space-x-reverse mb-3 px-1">
+            <div className="w-1 h-4 bg-primary rounded-full"></div>
+            <h4 className="text-xs font-black text-text uppercase tracking-wider opacity-70">
+              {t('proxy_tools')}
+            </h4>
+          </div>
+          <div className="flex items-center space-x-2 rtl:space-x-reverse overflow-x-auto pb-2 scrollbar-hide">
+            {proxyTools.map((tool) => (
               <a
-                href={formatUrl(shortcut.url)}
+                key={tool.name}
+                href={formatUrl(tool.url)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-col items-center space-y-2 w-full"
+                className="flex items-center space-x-2 px-3 py-1.5 bg-slate-100 dark:bg-slate-800/50 rounded-lg border border-transparent hover:border-primary/30 hover:bg-primary/5 transition-all whitespace-nowrap group/tool"
               >
-                <div className="w-10 h-10 flex items-center justify-center bg-slate-50 dark:bg-slate-800 rounded-xl text-slate-700 dark:text-slate-200 group-hover:bg-primary group-hover:scale-105 transition-all duration-300 shadow-sm overflow-hidden border border-border/50">
-                  {getFavicon(shortcut.url) ? (
-                    <img 
-                      src={getFavicon(shortcut.url)} 
-                      alt={shortcut.name}
-                      className="w-6 h-6 object-contain"
-                      onError={(e) => {
-                        const domain = new URL(shortcut.url).hostname;
-                        const fallbackUrl = `https://www.google.com/s2/favicons?sz=128&domain=${domain}`;
-                        if (e.target.src !== fallbackUrl) {
-                          e.target.src = fallbackUrl;
-                        } else {
-                          e.target.style.display = 'none';
-                          e.target.nextSibling.style.display = 'block';
-                        }
-                      }}
-                    />
-                  ) : null}
-                  <ExternalLink className="h-4 w-4 hidden" />
+                <div className="w-4 h-4 rounded overflow-hidden opacity-70 group-hover/tool:opacity-100 transition-opacity">
+                  <img src={getFavicon(tool.url)} alt="" className="w-full h-full object-contain" />
                 </div>
-                <span className="text-[10px] font-bold text-text truncate w-full text-center group-hover:text-primary transition-colors px-1">
-                  {shortcut.name}
+                <span className="text-[11px] font-bold text-slate-600 dark:text-slate-400 group-hover/tool:text-primary transition-colors">
+                  {tool.name}
                 </span>
               </a>
-            </div>
-          );
-        })}
-
-        <button
-          onClick={() => setIsAdding(true)}
-          className="flex flex-col items-center justify-center p-2 bg-slate-50/50 dark:bg-slate-800/50 border border-dashed border-border rounded-xl text-slate-400 hover:text-primary hover:border-primary hover:bg-primary/5 hover:scale-105 transition-all aspect-square group"
-        >
-          <Plus className="h-5 w-5 group-hover:rotate-90 transition-transform" />
-          <span className="text-[10px] font-bold mt-1">{t('addBtn')}</span>
-        </button>
-      </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {isAdding && (
         <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">

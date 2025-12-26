@@ -51,7 +51,8 @@ export const translations = {
     explore_shopping: 'Shopping',
     explore_tools: 'Tools',
     explore_knowledge: 'Knowledge',
-    explore_education: 'Education'
+    explore_education: 'Education',
+    proxy_tools: 'Popular Proxy Tools'
   },
   zh: {
     title: '您的每日聚合',
@@ -86,7 +87,8 @@ export const translations = {
     explore_shopping: '购物消费',
     explore_tools: '实用工具',
     explore_knowledge: '知识百科',
-    explore_education: '在线教育'
+    explore_education: '在线教育',
+    proxy_tools: '热门代理工具'
   },
   es: {
     title: 'Tu Hub Diario',

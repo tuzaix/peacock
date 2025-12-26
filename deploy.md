@@ -211,7 +211,44 @@ npm run build
 
 ---
 
-## 9. 环境变量配置参考
+## 9. 站点配置与自定义
+
+Peacock 支持通过外部 JSON 文件高度自定义导航内容。这些文件位于 `public/` 目录下，修改后无需重新构建即可生效（静态资源会自动刷新）。
+
+### 9.1 快捷导航 (Shortcuts)
+编辑 `public/shortcuts-config.json` 来配置首页顶部的“热门导航”图标。
+
+```json
+{
+  "hotShortcuts": [
+    { "id": "1", "name": "GitHub", "url": "https://github.com" },
+    { "id": "2", "name": "Bilibili", "url": "https://www.bilibili.com" }
+  ]
+}
+```
+
+### 9.2 热门代理工具 (Proxy Tools)
+编辑 `public/proxy-tools.json` 来配置导航下方的工具栏。如果该文件内容为空或数组为空，工具栏将自动隐藏。
+
+```json
+{
+  "proxyTools": [
+    { "name": "Clash Verge", "url": "https://github.com/clash-verge-rev/clash-verge-rev" },
+    { "name": "v2rayN", "url": "https://github.com/2dust/v2rayN" }
+  ]
+}
+```
+
+### 9.3 自动抓取图标
+每次修改上述配置文件后，建议在服务器上运行以下命令以缓存新站点的图标：
+
+```bash
+npm run fetch-icons
+```
+
+---
+
+## 10. 环境变量配置参考
 
 以下是 `.env` 文件中可用的环境变量：
 

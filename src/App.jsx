@@ -202,10 +202,19 @@ function App() {
       </main>
 
       <footer className="py-12 border-t border-border">
-        <div className="max-w-4xl mx-auto px-4 text-center">
+        <div className="max-w-4xl mx-auto px-4 text-center space-y-2">
           <p className="text-slate-400 text-sm">
             &copy; {new Date().getFullYear()} {t('title')}. {t('copyright')}
           </p>
+          <div className="flex items-center justify-center space-x-2 rtl:space-x-reverse text-slate-400 text-sm">
+            <span>{t('contact_us')}:</span>
+            <a 
+              href="mailto:contact@example.com" 
+              className="text-primary hover:underline transition-all"
+            >
+              contact@example.com
+            </a>
+          </div>
         </div>
       </footer>
 

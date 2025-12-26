@@ -88,7 +88,8 @@ export const translations = {
     explore_tools: '实用工具',
     explore_knowledge: '知识百科',
     explore_education: '在线教育',
-    proxy_tools: '热门代理工具'
+    proxy_tools: '热门代理工具',
+    contact_us: '联系我们'
   },
   es: {
     title: 'Tu Hub Diario',

@@ -19,11 +19,9 @@ const ExploreSection = ({ t, formatUrl }) => {
     try {
       const urlObj = new URL(url);
       let domain = urlObj.hostname;
-      // 针对 Gmail 的特殊处理
-      if (domain === 'mail.google.com' || domain === 'gmail.com') {
-        return 'https://www.gstatic.com/images/branding/product/1x/gmail_2020h_32dp.png';
-      }
-      return `https://www.google.com/s2/favicons?sz=128&domain=${domain}`;
+      
+      // 优先返回本地缓存的图标
+      return `/favicons/${domain}.png`;
     } catch (e) {
       return null;
     }
@@ -157,8 +155,9 @@ const ExploreSection = ({ t, formatUrl }) => {
                       alt="" 
                       className="w-5 h-5 object-contain"
                       onError={(e) => {
+                        const domain = new URL(site.url).hostname;
                         e.target.onerror = null;
-                        e.target.src = 'https://www.google.com/s2/favicons?sz=128&domain=google.com';
+                        e.target.src = `https://www.google.com/s2/favicons?sz=128&domain=${domain}`;
                       }}
                     />
                   </div>

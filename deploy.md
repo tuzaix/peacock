@@ -73,6 +73,9 @@ npm run build
 
 ## 5. 配置 Nginx
 
+如果您是第一次为该域名配置 Nginx，请参考 **方案 A**。如果您已经有运行中的服务（如 Next.js、API 等），请参考 **方案 B**。
+
+### 方案 A：独立站点配置
 创建一个新的 Nginx 配置文件：
 
 ```bash
@@ -113,20 +116,68 @@ sudo nginx -t
 sudo systemctl restart nginx
 ```
 
----
+### 方案 B：多服务集成配置（推荐）
+如果您已经有现成的 `server` 块（例如正在运行 Next.js 服务），可以将 Peacock 作为一个路径或主站集成进去。
 
-## 6. 自动化数据更新 (可选)
+编辑您现有的配置文件（例如 `/etc/nginx/sites-available/treatsyoself.com`）：
 
-如果项目需要定期运行脚本更新数据（如 `fetch-feeds`），可以配置 Crontab。
+```nginx
+server {
+    server_name treatsyoself.com www.treatsyoself.com;
 
-```bash
-crontab -e
+    # 1. 设置 Peacock 的静态文件根目录
+    root /var/www/peacock/dist;
+    index index.html;
+
+    # 2. Peacock 主程序入口
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    # 3. 集成已有的其他服务 (例如 Next.js)
+    location /my-mbti {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # SSL 相关的配置保持不变 (由 Certbot 管理)
+    listen [::]:443 ssl ipv6only=on;
+    listen 443 ssl;
+    ssl_certificate /etc/letsencrypt/live/treatsyoself.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/treatsyoself.com/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+}
 ```
 
-添加以下行（例如每小时运行一次）：
+---
+
+## 6. 自动化数据更新与图标缓存
+
+项目提供了两个维护脚本，建议通过 Crontab 定期运行。
+
+### 定期更新新闻源
 ```bash
 0 * * * * cd /var/www/peacock && /home/your-user/.nvm/versions/node/v20.x.x/bin/node scripts/fetch-feeds.js >> /var/www/peacock/fetch.log 2>&1
 ```
+
+### 缓存站点图标 (优化访问速度)
+为了避免频繁请求 Google Favicon 服务，您可以预先下载并缓存所有导航站点的图标：
+
+```bash
+cd /var/www/peacock
+npm run fetch-icons
+```
+
+> **提示**：如果您的服务器无法直接访问海外资源，可以在运行脚本前设置代理：
+> `export http_proxy=http://127.0.0.1:7897 && export https_proxy=http://127.0.0.1:7897`
 
 ---
 

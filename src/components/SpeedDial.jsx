@@ -54,11 +54,9 @@ const SpeedDial = ({ t, formatUrl }) => {
     try {
       const urlObj = new URL(url);
       let domain = urlObj.hostname;
-      // 针对 Gmail 的特殊处理
-      if (domain === 'mail.google.com' || domain === 'gmail.com') {
-        return 'https://www.gstatic.com/images/branding/product/1x/gmail_2020h_32dp.png';
-      }
-      return `https://www.google.com/s2/favicons?sz=128&domain=${domain}`;
+      
+      // 优先使用本地缓存的图标
+      return `/favicons/${domain}.png`;
     } catch (e) {
       return null;
     }
@@ -102,8 +100,14 @@ const SpeedDial = ({ t, formatUrl }) => {
                       alt={shortcut.name}
                       className="w-6 h-6 object-contain"
                       onError={(e) => {
-                        e.target.style.display = 'none';
-                        e.target.nextSibling.style.display = 'block';
+                        const domain = new URL(shortcut.url).hostname;
+                        const fallbackUrl = `https://www.google.com/s2/favicons?sz=128&domain=${domain}`;
+                        if (e.target.src !== fallbackUrl) {
+                          e.target.src = fallbackUrl;
+                        } else {
+                          e.target.style.display = 'none';
+                          e.target.nextSibling.style.display = 'block';
+                        }
                       }}
                     />
                   ) : null}

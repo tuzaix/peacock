@@ -192,7 +192,14 @@ sudo certbot --nginx -d your-domain.com
 
 ## 8. 维护与更新
 
-当代码有更新时：
+当代码有更新时，您可以使用根目录下的 `redeploy.sh` 脚本进行一键更新：
+
+```bash
+chmod +x redeploy.sh
+./redeploy.sh
+```
+
+手动更新命令参考：
 
 ```bash
 cd /var/www/peacock
